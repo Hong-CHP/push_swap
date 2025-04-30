@@ -21,7 +21,9 @@ typedef struct s_stack
 int	is_validate_param(char *str);
 int ft_atoi(char *str);
 void	get_value_init_stack(int argc, char *argv[]);
-//void    push_swap(char *str);
-void	sa(t_stack *stack);
+void	swap_top_two(t_stack *stack);
+void	push_to_top(t_stack *stack_a, t_stack *stack_b);
+void	rotate_to_top(t_stack *stack);
+void    reverse_rotate(t_stack *stack);
 
 #endif

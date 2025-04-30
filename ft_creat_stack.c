@@ -68,7 +68,20 @@ void	get_value_init_stack(int argc, char *argv[])
     }
     printf("%d\n", stack_a.size);
     ft_print_stack(&stack_a);
-    sa(&stack_a);
+    swap_top_two(&stack_a);
+    ft_print_stack(&stack_a);
+    printf("-------------------\n");
+    push_to_top(&stack_a, &stack_b);
+    ft_print_stack(&stack_a);
+    ft_print_stack(&stack_b);
+    printf("-------------------\n");
+    push_to_top(&stack_b, &stack_a);
+    ft_print_stack(&stack_a);
+    ft_print_stack(&stack_b);
+    rotate_to_top(&stack_a);
+    ft_print_stack(&stack_a);
+    reverse_rotate(&stack_a);
     ft_print_stack(&stack_a);
     ft_free_stack(&stack_a);
+    ft_free_stack(&stack_b);
 }
