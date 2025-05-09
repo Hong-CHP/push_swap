@@ -26,7 +26,6 @@ void	push_to_top(t_stack *stack_a, t_stack *stack_b);
 void	rotate_to_top(t_stack *stack);
 void    reverse_rotate(t_stack *stack);
 void    push_swap(t_stack *stack_a, t_stack *stack_b);
-void    push_swap_algo(t_stack *stack_a, t_stack *stack_b);
 void    sa(t_stack *stack_a);
 void    ra(t_stack *stack_a);
 void    rra(t_stack *stack_a);
