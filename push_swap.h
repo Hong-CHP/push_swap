@@ -31,5 +31,6 @@ void    sa(t_stack *stack_a);
 void    ra(t_stack *stack_a);
 void    rra(t_stack *stack_a);
 void    pb(t_stack *stack_b, t_stack *stack_a);
+void    pa(t_stack *stack_b, t_stack *stack_a);
 
 #endif

@@ -77,8 +77,18 @@ void    rotate_to_min(t_stack *stack_a, int min_pos, int min)
             while (*(stack_a->top->value) != min)
                 rra(stack_a);
     }
-
-    printf("%d\n", *(stack_a->top->value));
+    else
+    {
+        if (min_pos <= (stack_a->size + 1) / 2)
+        {
+            while (*(stack_a->top->value) != min)
+                ra(stack_a);
+        }
+        else
+            while (*(stack_a->top->value) != min)
+                rra(stack_a);
+    }
+    //printf("%d\n", *(stack_a->top->value));
 }
 
 void    push_swap_algo(t_stack *stack_a, t_stack *stack_b)
@@ -86,9 +96,15 @@ void    push_swap_algo(t_stack *stack_a, t_stack *stack_b)
     int min_pos;
     int min;
 
-    min_pos = find_min_position(stack_a, &min);
-    rotate_to_min(stack_a, min_pos, min);
-
+    while (stack_a->size > 3)
+    {
+        min_pos = find_min_position(stack_a, &min);
+        rotate_to_min(stack_a, min_pos, min);
+        pb(stack_a, stack_b);
+    }
+    ft_sort_three(stack_a);
+    while (stack_b->size > 0)
+        pa(stack_b, stack_a);
 }
 
 void    push_swap(t_stack *stack_a, t_stack *stack_b)
@@ -99,8 +115,6 @@ void    push_swap(t_stack *stack_a, t_stack *stack_b)
         ft_sort_two(stack_a);
     if (stack_a->size == 3)
         ft_sort_three(stack_a);
-//    if (stack_a->size > 3 && stack_a->size <= 5)
-
     if (stack_a->size > 3)
         push_swap_algo(stack_a, stack_b);
 }
