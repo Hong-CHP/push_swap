@@ -40,44 +40,44 @@ void    ft_sort_three(t_stack *stack)
     }
 }
 
-int *min_tab(t_stack *stack, int *min)
-{
-    t_node  *cur;
-    t_node  *node;
-    int arr[3] = {0};
-    int i;
-    int j;
+// int *min_tab(t_stack *stack, int *min)
+// {
+//     t_node  *cur;
+//     t_node  *node;
+//     int arr[3] = {0};
+//     int i;
+//     int j;
 
-    i = 0;
-    cur = stack->top;
-    while (cur && i < 3)
-    {
-        if (i != 0 && *(cur->value) == *min)
-            cur = cur->next;
-        *min = *(cur->value);
-        node = cur;
-        while (node->next)
-        {
-            j = 0;
-            while (j < i && *(node->next->value) != arr[j])
-                j++;//j = 1
-            if (j == i && *min > *(node->next->value))
-                *min = *(node->next->value);
-            node = node->next;
-        }
-        if (i < 3)
-        {
-            arr[i] = *min;
-            i++;
-        }
-        cur = cur->next;
-    }
-    i = 0;
-    while (i < 3)
-    {
-        printf("%d, ", arr[i++]);
-    }
-}
+//     i = 0;
+//     cur = stack->top;
+//     while (cur && i < 3)
+//     {
+//         if (i != 0 && *(cur->value) == *min)
+//             cur = cur->next;
+//         *min = *(cur->value);
+//         node = cur;
+//         while (node->next)
+//         {
+//             j = 0;
+//             while (j < i && *(node->next->value) != arr[j])
+//                 j++;//j = 1
+//             if (j == i && *min > *(node->next->value))
+//                 *min = *(node->next->value);
+//             node = node->next;
+//         }
+//         if (i < 3)
+//         {
+//             arr[i] = *min;
+//             i++;
+//         }
+//         cur = cur->next;
+//     }
+//     i = 0;
+//     while (i < 3)
+//     {
+//         printf("%d, ", arr[i++]);
+//     }
+// }
 
 // int find_min_position(t_stack *stack_a, int *min)
 // {
@@ -157,12 +157,8 @@ void    push_swap(t_stack *stack_a, t_stack *stack_b)
         ft_sort_two(stack_a);
     if (stack_a->size == 3)
         ft_sort_three(stack_a);
-    if (stack_a->size > 3 && stack_a->size < 10)
+    if (stack_a->size > 3)
     {
-        int min;
-        min_tab(stack_a, &min);        
-    
-        //ft_sort_ten(stack_a, stack_b);
-
+        push_swap_algo(stack_a, stack_b);
     }
 }
