@@ -16,6 +16,16 @@ int	is_validate_param(char *str)
 	return (1);
 }
 
+// int	*ft_bzero(int *s, size_t n)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < n)
+// 		s[i++] = 0;
+// 	return (s);
+// }
+
 int ft_atoi(char *str)
 {
 	int nb;

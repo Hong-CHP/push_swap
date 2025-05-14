@@ -41,7 +41,6 @@ void	rotate_to_top(t_stack *stack)
 {
 	t_node	*bottom;
 	t_node	*first;
-	t_node	*temp;
 
 	if (stack->size < 2)
 		return ;

@@ -20,70 +20,59 @@ int *pos_from_top_or_bottom(t_stack *stack_a, int pos, int *pos_obj, int start)
         else
             pos_obj[start] = stack_a->size - pos + 1;
     }
-    return (pos_obj);
+    return (pos_obj); //0-9, 3-8, 4 -4
 }
     
-int *find_obj_node_pos(t_stack *stack_a, int times, int *arr, int sqrt)
+void    find_obj_node_pos(t_stack *stack_a, int *arr, int sqrt, int *pos_obj)
 {
     t_node *cur;
     int start;
-    int end;
-    int *pos_obj;
     int pos;
+    int found;
 
-    pos_obj = (int *)malloc(sizeof(int) * sqrt);
-    if (!pos_obj)
-        return (NULL);
-    start = (times - 1) * sqrt;
-    end = times * sqrt;
-    while (start < end)
-    {
+    start = 0;
+    while (start < sqrt) //0 1 2
+    {  //0 3 4 7
         pos = 1;
         cur = stack_a->top;
-        while (cur)
+        found = 0;
+        while (cur) //stack_a = 3 0 4
         {
-            if (arr[start] == *(cur->value))
+            if (arr[start] == *(cur->value)) //arr[0], arr[1], arr[2], arr[3] not found
+            {
                 pos_from_top_or_bottom(stack_a, pos, pos_obj, start);
+                found = 1;
+            }
             pos++;
             cur =cur->next;
         }
-        start++;
+        if (!found)
+            pos_obj[start] = -1; //pos_obj[3] = -1
+        start++; //1 2 3 4
     }
-    return (pos_obj);
 }
 
-t_obj   find_shorter_path_rotate(t_stack *stack_a, int times, int *arr, int sqrt)
+t_obj   find_shorter_path_rotate(int *arr, int sqrt, int *pos_obj)
 {
     t_obj   obj;
-    int *obj_pos;
     int i;
     int shortest;
     int obj_value;
 
-    obj_pos = find_obj_node_pos(stack_a, times, arr, sqrt);
     i = 0;
-    printf("arr is : ");
-    while (i < sqrt)
-        printf("%d ", arr[i++]);
-    printf("\n");
-    i = 0;
-    printf("obj_pos is : ");
-    while (i < sqrt)
-        printf("%d ", obj_pos[i++]);
-    printf("\n");
-    i = 1;
-    shortest = obj_pos[0];
+    while(i < sqrt && pos_obj[i] == -1)
+        i++;
+    shortest = pos_obj[i]; //shortest = obj[1] = 1
+    obj_value = i;
     while (i < sqrt)
     {
-        if (shortest > obj_pos[i])
+        if (pos_obj[i] != -1)
         {
-            shortest = obj_pos[i];
-            obj_value = i;
-        }
-        else
-        {
-            shortest = obj_pos[0];
-            obj_value = 0;
+            if (shortest > pos_obj[i])
+            {
+                shortest = pos_obj[i];
+                obj_value = i;
+            }
         }
         i++;
     }
@@ -97,7 +86,9 @@ int get_obj_real_pos(t_stack *stack_a, t_obj *shortest_obj)
     t_node *cur;
     int real_pos;
 
-    real_pos = 0;
+    if (shortest_obj->obj_path == -1)
+        return (-1);
+    real_pos = 1;
     cur = stack_a->top;
     while (cur)
     {
