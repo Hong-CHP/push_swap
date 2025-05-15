@@ -23,33 +23,39 @@ int *pos_from_top_or_bottom(t_stack *stack_a, int pos, int *pos_obj, int start)
     return (pos_obj); //0-9, 3-8, 4 -4
 }
     
-void    find_obj_node_pos(t_stack *stack_a, int *arr, int sqrt, int *pos_obj)
+void    find_obj_node_pos(t_stack *stack_a, int *arr, int start, int end, int *pos_obj)
 {
     t_node *cur;
-    int start;
+    int index;
     int pos;
     int found;
 
-    start = 0;
-    while (start < sqrt) //0 1 2
-    {  //0 3 4 7
+    index = 0;
+    printf("start = %d\n", start); 
+    printf("end = %d\n", end); 
+    while (start < end) //0-4, 4-8
+    //0 3 6 7, 12 16 19 22, 
+    {
         pos = 1;
         cur = stack_a->top;
         found = 0;
-        while (cur) //stack_a = 3 0 4
+        while (cur) //stack_a = 7 0 3 6, 
         {
-            if (arr[start] == *(cur->value)) //arr[0], arr[1], arr[2], arr[3] not found
+            if (arr[start] == *(cur->value)) //arr0
             {
-                pos_from_top_or_bottom(stack_a, pos, pos_obj, start);
+                printf("this show cur->value is: %d\n", *(cur->value));
+                pos_from_top_or_bottom(stack_a, pos, pos_obj, index);
                 found = 1;
             }
             pos++;
             cur =cur->next;
         }
         if (!found)
-            pos_obj[start] = -1; //pos_obj[3] = -1
-        start++; //1 2 3 4
+            pos_obj[index] = -1; //pos_obj[3] = -1
+        start++; //1
+        index++;
     }
+    printf("pos_obj is: %d %d %d %d\n", pos_obj[0], pos_obj[1], pos_obj[2], pos_obj[3]);
 }
 
 t_obj   find_shorter_path_rotate(int *arr, int sqrt, int *pos_obj)
