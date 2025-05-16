@@ -66,11 +66,16 @@ void	get_value_init_stack(int argc, char *argv[])
         ft_push(&stack_a, value);
         i++;
     }
-    //printf("%d\n", stack_a.size);
     ft_print_stack(&stack_a);
     push_swap(&stack_a, &stack_b);
     ft_print_stack(&stack_a);
     ft_print_stack(&stack_b);
+    back_to_a(&stack_a, &stack_b);
+    ft_print_stack(&stack_a);
+    if (stack_b.size != 0)
+        ft_print_stack(&stack_b);
+    else
+        printf("NULL\n");
     ft_free_stack(&stack_a);
     ft_free_stack(&stack_b);
 }

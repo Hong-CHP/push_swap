@@ -12,7 +12,7 @@ t_node  *get_stack_b_bottom(t_stack *stack_b)
     return (cur);
 }
 
-void    test_rr_ra_and_rotate(t_stack *stack_a, t_stack *stack_b, t_obj *shortest_obj, int real_pos)
+void    test_rr_ra_and_rotate(t_stack *stack_a, t_stack *stack_b, t_obj *shortest_obj)
 {
     int b_bottom;
 
@@ -27,7 +27,7 @@ void    test_rr_ra_and_rotate(t_stack *stack_a, t_stack *stack_b, t_obj *shortes
     }
 }
 
-void    test_rrr_rra_and_rotate(t_stack *stack_a, t_stack *stack_b, t_obj *shortest_obj, int real_pos)
+void    test_rrr_rra_and_rotate(t_stack *stack_a, t_stack *stack_b, t_obj *shortest_obj)
 {
     int b_bottom;
 
@@ -46,86 +46,70 @@ void    swap_and_rotate(t_stack *stack_a, t_stack *stack_b, t_obj *shortest_obj,
 {
 
     if (real_pos == 2)
-        sa(stack_a);
+    {
+        if (stack_b->size >= 2 && *(stack_b->top->value) < *(stack_b->top->next->value))
+            ss(stack_a, stack_b);
+        else
+            sa(stack_a);
+    }
     if (stack_a->size % 2 == 0)
     {
         if (real_pos <= stack_a->size / 2 + 1)
-            test_rr_ra_and_rotate(stack_a, stack_b, shortest_obj, real_pos);
+            test_rr_ra_and_rotate(stack_a, stack_b, shortest_obj);
         else
-            test_rrr_rra_and_rotate(stack_a, stack_b, shortest_obj, real_pos);
+            test_rrr_rra_and_rotate(stack_a, stack_b, shortest_obj);
     }
     else
     {
         if (real_pos <= (stack_a->size + 1) / 2)
-            test_rr_ra_and_rotate(stack_a, stack_b, shortest_obj, real_pos);
+            test_rr_ra_and_rotate(stack_a, stack_b, shortest_obj);
         else
-            test_rrr_rra_and_rotate(stack_a, stack_b, shortest_obj, real_pos);
+            test_rrr_rra_and_rotate(stack_a, stack_b, shortest_obj);
     }
 }
 
 void    rotate_obj_to_top(t_stack *stack_a, t_stack *stack_b, t_obj *shortest_obj)
 {
     int real_pos;
+    int b_bottom;
 
-    //printf("shortest_obj.obj_path is : %d\n", shortest_obj->obj_path);
-    //printf("shortest_obj.obj_value is : %d\n", shortest_obj->obj_value);
     real_pos = get_obj_real_pos(stack_a, shortest_obj);
-    //printf("real position of obj is : %d\n", real_pos);
     swap_and_rotate(stack_a, stack_b, shortest_obj, real_pos);
     pb(stack_a, stack_b);
-    if (stack_b->size >= 2 && *(stack_b->top->value) < *(stack_b->top->next->value))
+    if (stack_b->size > 2)
+        b_bottom = *(get_stack_b_bottom(stack_b)->value);
+    if (stack_b->size >= 2 && *(stack_b->top->value) < *(stack_b->top->next->value) && *(stack_b->top->value) > b_bottom)
         sb(stack_b);
+    if (stack_b->size >= 2 && *(stack_b->top->value) < *(stack_b->top->next->value) && *(stack_b->top->value) < b_bottom)
+        rb(stack_b);
 }
-//./a.out 12 28 54 23 6 41 3 19 22 0 30 7 52 16 49 38 25
+//./a.out 12 28 54 23 6 41 3 19 22 0 30 7 52 16 49 38 25 53
 
-void push_swap_algo(t_stack *stack_a, t_stack *stack_b)
+void push_swap_algo(t_stack *stack_a, t_stack *stack_b, int sqrt, int *arr)
 {
-    int sqrt;
-    int arr[stack_a->size];
     int times;
     t_obj shortest_obj;
     int *pos_obj;
     int i;
     int start;
 
-    sqrt = 0;
-    get_sort_arr_preparation_for_algo(stack_a, &sqrt, arr);
     i = 0;
-    // while (i < sqrt)
-    // {
+    while (i < sqrt - 1)
+    {
         times = i * sqrt;
         pos_obj = (int *)malloc(sizeof(int) * sqrt);
         if (!pos_obj)
             return ;
         ft_bzero(pos_obj, sqrt);
-        start = times; //0
-        while (times < sqrt * i + sqrt) //0 < 4 1
+        start = times;
+        while (times < sqrt * i + sqrt)
         {
             find_obj_node_pos(stack_a, arr, start, sqrt * i + sqrt, pos_obj);
-            shortest_obj = find_shorter_path_rotate(arr, sqrt, pos_obj);
-            printf("shortest_obj->obj_value is  : %d\n", shortest_obj.obj_value);
-            rotate_obj_to_top(stack_a, stack_b, &shortest_obj); 
+            shortest_obj = find_shorter_path_rotate(arr, sqrt, pos_obj, start);
+            rotate_obj_to_top(stack_a, stack_b, &shortest_obj);
             times++;
         }
-        printf("after size is : %d\n", stack_a->size);
-        printf("times = %d\n", times); 
         free(pos_obj);     
         i++;
-        printf("i = %d\n", i);
-        start = times;
-        printf("end = %d\n", sqrt * i + sqrt);
-        find_obj_node_pos(stack_a, arr, start, sqrt * i + sqrt, pos_obj);
-        // while (times < sqrt * i + sqrt) //0 < 4 1
-        // {
-        //     find_obj_node_pos(stack_a, arr, start, sqrt * i + sqrt, pos_obj);
-        //     shortest_obj = find_shorter_path_rotate(arr, sqrt, pos_obj);
-        //     printf("shortest_obj->obj_value is  : %d\n", shortest_obj.obj_value);
-        //     rotate_obj_to_top(stack_a, stack_b, &shortest_obj); 
-        //     times++;
-        // }
-        // printf("after size is : %d\n", stack_a->size);
-        // printf("times = %d\n", times); 
-        // free(pos_obj);     
-        // i++;
-    // }
+    }
 }

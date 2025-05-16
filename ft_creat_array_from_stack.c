@@ -1,19 +1,22 @@
 #include "push_swap.h"
 
-int find_sqrt(t_stack *stack_a, int *sqrt)
+int find_sqrt(t_stack *stack_a)
 {
     int size;
+    int sqrt;
 
+    sqrt = 0;
     size = stack_a->size;
-    while (*sqrt < size / 2)
+    while (sqrt * sqrt <= size)
     {
-        if (*sqrt * *sqrt == size)
-            return (*sqrt);
-        else if (*sqrt * *sqrt > size && (*sqrt - 1) * (*sqrt - 1) < size)
-            return (*sqrt - 1);
-        (*sqrt)++;
+        if (sqrt * sqrt == size)
+            return (sqrt);
+        sqrt++;
     }
-    return (0);
+    if (sqrt * sqrt > size && (sqrt - 1) * (sqrt - 1) < size)
+        return (sqrt - 1);
+    else
+        return (0);
 }
 
 int *creat_array_from_stack(t_stack *stack_a, int *arr)
@@ -31,13 +34,12 @@ int *creat_array_from_stack(t_stack *stack_a, int *arr)
     return (arr);
 }
 
-void    get_sort_arr_preparation_for_algo(t_stack *stack_a, int *sqrt, int *arr)
+void    get_sort_arr_preparation_for_algo(t_stack *stack_a, int *arr)
 {
     int temp;
     int i;
     int j;
 
-    *sqrt = find_sqrt(stack_a, sqrt);
     arr = creat_array_from_stack(stack_a, arr);
     i = 0;
     while (i < stack_a->size - 1)

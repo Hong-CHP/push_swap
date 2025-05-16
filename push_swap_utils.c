@@ -18,7 +18,7 @@ int	is_validate_param(char *str)
 
 int	*ft_bzero(int *s, size_t n)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < n)

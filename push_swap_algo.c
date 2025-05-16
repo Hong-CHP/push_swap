@@ -40,125 +40,77 @@ void    ft_sort_three(t_stack *stack)
     }
 }
 
-// int *min_tab(t_stack *stack, int *min)
-// {
-//     t_node  *cur;
-//     t_node  *node;
-//     int arr[3] = {0};
-//     int i;
-//     int j;
+t_obj find_min_position(t_stack *stack_a)
+{
+    t_node *cur;
+    int pos;
+    int min_pos;
+    int min;
+    t_obj shortest_obj;
 
-//     i = 0;
-//     cur = stack->top;
-//     while (cur && i < 3)
-//     {
-//         if (i != 0 && *(cur->value) == *min)
-//             cur = cur->next;
-//         *min = *(cur->value);
-//         node = cur;
-//         while (node->next)
-//         {
-//             j = 0;
-//             while (j < i && *(node->next->value) != arr[j])
-//                 j++;//j = 1
-//             if (j == i && *min > *(node->next->value))
-//                 *min = *(node->next->value);
-//             node = node->next;
-//         }
-//         if (i < 3)
-//         {
-//             arr[i] = *min;
-//             i++;
-//         }
-//         cur = cur->next;
-//     }
-//     i = 0;
-//     while (i < 3)
-//     {
-//         printf("%d, ", arr[i++]);
-//     }
-// }
-
-// int find_min_position(t_stack *stack_a, int *min)
-// {
-//     t_node *cur;
-//     int pos;
-//     int min_pos;
-//     int arr[3];
-//     int i;
-
-//     pos = 1;
-//     min_pos = pos;
-//     cur = stack_a->top;
-//     *min = *(stack_a->top->value);
-//     i = 0;
-//     while(cur->next)
-//     {
-//         if (*min > *(cur->next->value))
-//         {
-//             *min = *(cur->next->value);
-//             min_pos = pos + 1;
-//         }
-//         pos++;
-//         cur = cur->next;
-//     }
-//     return (min_pos);
-// }
-
-// void    rotate_to_min(t_stack *stack_a, int min_pos, int min)
-// {
-//     if (min_pos == 2)
-//         sa(stack_a);
-//     if (stack_a->size % 2 == 0)
-//     {
-//         if (min_pos <= stack_a->size / 2 + 1)
-//         {
-//             while (*(stack_a->top->value) != min)
-//                 ra(stack_a);
-//         }
-//         else
-//             while (*(stack_a->top->value) != min)
-//                 rra(stack_a);
-//     }
-//     else
-//     {
-//         if (min_pos <= (stack_a->size + 1) / 2)
-//         {
-//             while (*(stack_a->top->value) != min)
-//                 ra(stack_a);
-//         }
-//         else
-//             while (*(stack_a->top->value) != min)
-//                 rra(stack_a);
-//     }
-// }
-
-// void    ft_sort_ten(t_stack *stack_a, t_stack *stack_b)
-// {
-//     int min_pos;
-//     int min;
-
-//     while (stack_a->size > 3)
-//     {
-//         min_pos = find_min_position(stack_a, &min);
-//         rotate_to_min(stack_a, min_pos, min);
-//         pb(stack_a, stack_b);
-//     }
-//     ft_sort_three(stack_a);
-//     while (stack_b->size > 0)
-//         pa(stack_b, stack_a);
-// }
+    pos = 0;
+    min_pos = pos;
+    cur = stack_a->top;
+    min = *(stack_a->top->value);
+    while(cur->next)
+    {
+        if (min > *(cur->next->value))
+        {
+            min = *(cur->next->value);
+            min_pos = pos + 1;
+        }
+        pos++;
+        cur = cur->next;
+    }
+    shortest_obj.obj_path = min_pos;
+    shortest_obj.obj_value = min;
+    return (shortest_obj);
+}
 
 void    push_swap(t_stack *stack_a, t_stack *stack_b)
 {
+    t_obj shortest_obj;
+    int sqrt;
+    int arr[stack_a->size];
+
     if (stack_a->size <= 1)
         return ;
+    while (stack_a->size > 5)
+    {
+        sqrt = find_sqrt(stack_a);
+        get_sort_arr_preparation_for_algo(stack_a, arr);
+        push_swap_algo(stack_a, stack_b, sqrt, arr);
+    }
     if (stack_a->size == 2)
         ft_sort_two(stack_a);
-    if (stack_a->size == 3)
+    else if (stack_a->size == 3)
         ft_sort_three(stack_a);
-    if (stack_a->size > 3)
+    else if (stack_a->size > 3 && stack_a->size <=5)
     {
-        push_swap_algo(stack_a, stack_b);
+        while (stack_a->size > 3)
+        {
+            shortest_obj = find_min_position(stack_a);
+            rotate_obj_to_top(stack_a, stack_b, &shortest_obj);
+        }
+        ft_sort_three(stack_a);
     }
+}
+
+void    back_to_a(t_stack *stack_a, t_stack *stack_b)
+{
+    while(stack_b->top->next)
+    {
+        if (*(stack_b->top->value) < *(stack_b->top->next->value))
+        {
+            if (*(stack_b->top->value) < *(stack_b->top->next->value) && *(stack_b->top->value) < *(stack_b->top->next->next->value))
+            {
+                pa(stack_b, stack_a);
+                sb(stack_b);
+                pb(stack_a, stack_b);
+            }
+            sb(stack_b);
+        }
+        pa(stack_b, stack_a);
+    }
+    pa(stack_b, stack_a);
 }

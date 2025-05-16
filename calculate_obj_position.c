@@ -20,7 +20,7 @@ int *pos_from_top_or_bottom(t_stack *stack_a, int pos, int *pos_obj, int start)
         else
             pos_obj[start] = stack_a->size - pos + 1;
     }
-    return (pos_obj); //0-9, 3-8, 4 -4
+    return (pos_obj);
 }
     
 void    find_obj_node_pos(t_stack *stack_a, int *arr, int start, int end, int *pos_obj)
@@ -31,19 +31,15 @@ void    find_obj_node_pos(t_stack *stack_a, int *arr, int start, int end, int *p
     int found;
 
     index = 0;
-    printf("start = %d\n", start); 
-    printf("end = %d\n", end); 
-    while (start < end) //0-4, 4-8
-    //0 3 6 7, 12 16 19 22, 
+    while (start < end)
     {
         pos = 1;
         cur = stack_a->top;
         found = 0;
-        while (cur) //stack_a = 7 0 3 6, 
+        while (cur)
         {
-            if (arr[start] == *(cur->value)) //arr0
+            if (arr[start] == *(cur->value))
             {
-                printf("this show cur->value is: %d\n", *(cur->value));
                 pos_from_top_or_bottom(stack_a, pos, pos_obj, index);
                 found = 1;
             }
@@ -51,14 +47,13 @@ void    find_obj_node_pos(t_stack *stack_a, int *arr, int start, int end, int *p
             cur =cur->next;
         }
         if (!found)
-            pos_obj[index] = -1; //pos_obj[3] = -1
-        start++; //1
+            pos_obj[index] = -1;
+        start++;
         index++;
     }
-    printf("pos_obj is: %d %d %d %d\n", pos_obj[0], pos_obj[1], pos_obj[2], pos_obj[3]);
 }
 
-t_obj   find_shorter_path_rotate(int *arr, int sqrt, int *pos_obj)
+t_obj   find_shorter_path_rotate(int *arr, int sqrt, int *pos_obj, int start)
 {
     t_obj   obj;
     int i;
@@ -68,7 +63,7 @@ t_obj   find_shorter_path_rotate(int *arr, int sqrt, int *pos_obj)
     i = 0;
     while(i < sqrt && pos_obj[i] == -1)
         i++;
-    shortest = pos_obj[i]; //shortest = obj[1] = 1
+    shortest = pos_obj[i];
     obj_value = i;
     while (i < sqrt)
     {
@@ -83,7 +78,7 @@ t_obj   find_shorter_path_rotate(int *arr, int sqrt, int *pos_obj)
         i++;
     }
     obj.obj_path = shortest;
-    obj.obj_value = arr[obj_value];
+    obj.obj_value = arr[obj_value + start];
     return (obj);
 }
 
