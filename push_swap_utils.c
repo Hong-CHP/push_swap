@@ -7,6 +7,8 @@ int	is_validate_param(char *str)
 	i = 0;
 	while (str[i])
 	{
+		if (is_space(str[i]))
+			i++;
 		if (str[i] == '+' || str[i] == '-')
 			i++;
 		if(!(str[i] >= '0' && str[i] <= '9'))

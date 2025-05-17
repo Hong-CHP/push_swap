@@ -49,6 +49,20 @@ void    ft_print_stack(t_stack *stack)
     printf("NULL\n");
 }
 
+int is_dup_value(t_stack *stack, int *value)
+{
+    t_node  *cur;
+
+    cur = stack->top;
+    while (cur)
+    {
+        if (*value == *(cur->value))
+            return (1);
+        cur = cur->next;
+    }
+    return (0);
+}
+
 void	get_value_init_stack(int argc, char *argv[])
 {
     int *value;
@@ -63,14 +77,17 @@ void	get_value_init_stack(int argc, char *argv[])
         if (!value)
             return ;
         *value = ft_atoi(argv[i]);
+        if (is_dup_value(&stack_a, value))
+        {
+            write(1, "Error\n", 6);
+            exit(1);
+        }
         ft_push(&stack_a, value);
         i++;
     }
     ft_print_stack(&stack_a);
     push_swap(&stack_a, &stack_b);
-    ft_print_stack(&stack_a);
-    ft_print_stack(&stack_b);
-    if (stack_a.size > 3)
+    if (stack_a.size >= 3 && stack_b.size > 0)
         back_to_a(&stack_a, &stack_b);
     ft_print_stack(&stack_a);
     if (stack_b.size != 0)

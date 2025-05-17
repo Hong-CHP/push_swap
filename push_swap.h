@@ -24,6 +24,10 @@ typedef struct s_obj
     int obj_value;
 }               t_obj;
 
+int	ft_strlen(char *str);
+int is_space(char c);
+int ft_split_needed(int ac, char *av[]);
+char **ft_split(char *str);
 int	is_validate_param(char *str);
 int	*ft_bzero(int *s, size_t n);
 int ft_atoi(char *str);
