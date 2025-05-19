@@ -1,5 +1,15 @@
 #include "push_swap.h"
 
+int	ft_strlen(char *str)
+{
+	int	len;
+
+	len = 0;
+	while(str[len])
+		len++;
+	return (len);
+}
+
 int	is_validate_param(char *str)
 {
 	int	i;
@@ -16,6 +26,28 @@ int	is_validate_param(char *str)
 		i++;
 	}
 	return (1);
+}
+
+char	*ft_strdup(char *src)
+{
+	int		i;
+	char	*dest;
+	int		len;
+
+	if (!src)
+		return (NULL);
+	len = ft_strlen(src);
+	dest = (char *)malloc((len + 1) *sizeof(char));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
 int	*ft_bzero(int *s, size_t n)

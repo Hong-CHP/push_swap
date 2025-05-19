@@ -1,34 +1,82 @@
 #include "push_swap.h"
 
-int is_space(char c)
+int count_words(char *str)
 {
-    if (c == ' ' || (c >= 9 && c <= 13))
-        return (1);
-    else
-        return (0);
-}
-
-int ft_split_needed(int ac, char *av[])
-{
+    int space;
+    int count;
     int i;
-    int j;
 
     i = 0;
-    while (i < ac)
+    count = 0;
+    space = 1;
+    while (str[i])
     {
-        j = 0;
-        while (j < ft_strlen(av[i]))
+        if (!is_space(str[i]))
         {
-            if (is_space(av[i][j]))
-                return (i);
-            j++;
-        }    
+            if (space == 1)
+            {
+                count++;
+                space = 0;
+            }
+        }
+        else
+            space = 1;
         i++;
     }
-    return (0);
+    return (count);
 }
 
-// char **ft_split(char *str)
-// {
-    
-// }
+char *ft_word_dup(char *src, int word_len)
+{
+    char *word;
+    int i;
+
+    word = (char *)malloc((word_len + 1) * sizeof(char));
+    if (!word)
+        return (NULL);
+    i = 0;
+    while (i < word_len)
+    {
+        word[i] = src[i];
+        i++;
+    }
+    word[i] = '\0';
+    return (word);
+}
+
+char **ft_split(char **res, char *str)
+{
+    int word_index;
+    int word_len;
+    int i;
+
+    i = 0;
+    word_len = 0;
+    word_index = 0;
+    while (str[i])
+    {
+        if (is_space(str[i]))
+        {
+            res[word_index] = ft_word_dup(&str[i - word_len], word_len);
+            word_index++;
+            word_len = 0;
+        }
+        else
+            word_len++;
+        i++;
+    }
+    res[word_index++] = ft_word_dup(&str[i - word_len], word_len);
+    res[word_index] = NULL;
+    return (res);
+}
+
+char **allocate_and_split(char *str)
+{
+    char    **res;
+
+    res = (char **)malloc(sizeof(char *) * (count_words(str) + 1));
+    if (!res)
+        return (NULL);
+    res = ft_split(res, str);
+    return (res);
+}

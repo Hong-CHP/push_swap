@@ -73,6 +73,7 @@ void    rotate_obj_to_top(t_stack *stack_a, t_stack *stack_b, t_obj *shortest_ob
     int real_pos;
     int b_bottom;
 
+    b_bottom = 0;
     real_pos = get_obj_real_pos(stack_a, shortest_obj);
     swap_and_rotate(stack_a, stack_b, shortest_obj, real_pos);
     pb(stack_a, stack_b);

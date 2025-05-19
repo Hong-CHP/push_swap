@@ -27,7 +27,13 @@ typedef struct s_obj
 int	ft_strlen(char *str);
 int is_space(char c);
 int ft_split_needed(int ac, char *av[]);
-char **ft_split(char *str);
+char	*ft_strdup(char *src);
+char *ft_strjoin(char *str_tab, int ac, char *av[]);
+char	*join_before_split(int ac, char *av[]);
+void	free_reverse_params(int ac, char **res);
+int count_words(char *str);
+char **ft_split(char **res, char *str);
+char **allocate_and_split(char *str);
 int	is_validate_param(char *str);
 int	*ft_bzero(int *s, size_t n);
 int ft_atoi(char *str);

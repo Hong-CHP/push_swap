@@ -1,35 +1,17 @@
 #include "push_swap.h"
 
-int	ft_strlen(char *str)
+void	free_reverse_params(int ac, char **res)
 {
-	int	len;
+	int i;
 
-	len = 0;
-	while(str[len])
-		len++;
-	return (len);
-}
-
-char	*ft_strdup(char *src)
-{
-	int		i;
-	char	*dest;
-	int		len;
-
-	if (!src)
-		return (NULL);
-	len = ft_strlen(src);
-	dest = (char *)malloc((len + 1) *sizeof(char));
-	if (!dest)
-		return (NULL);
 	i = 0;
-	while (src[i])
+	while (i < ac)
 	{
-		dest[i] = src[i];
+		free(res[i]);
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	free(res);
+	res = NULL;
 }
 
 char	**reverse_params(int ac, char *av[])
@@ -38,7 +20,7 @@ char	**reverse_params(int ac, char *av[])
 	int		i;
 	int		j;
 
-	res = (char **)malloc(ac * sizeof(char *));
+	res = (char **)malloc((ac + 1) * sizeof(char *));
 	if (!res)
 		return (NULL);
 	i = 0;
@@ -49,29 +31,50 @@ char	**reverse_params(int ac, char *av[])
 		j--;
 		i++;
 	}
+	res[i] = NULL;
 	return (res);
+}
+
+void	split_reverse_put_into_stack(int ac, char *av[])
+{
+	char **res;
+	char **ptr;
+	char *str_join;
+
+	if (ac == 1 && ft_split_needed(ac, av) == 0)
+	{
+		res = allocate_and_split(av[0]);
+		ptr = reverse_params(count_words(av[0]), res);
+		free_reverse_params(count_words(av[0]), res);
+		get_value_init_stack(count_words(av[0]), ptr);
+		free_reverse_params(count_words(av[0]), ptr);
+	}
+	else
+	{
+		str_join = join_before_split(ac, av);
+		res = allocate_and_split(str_join);
+		ptr = reverse_params(count_words(str_join), res);
+		free_reverse_params(count_words(str_join), res);
+		get_value_init_stack(count_words(str_join), ptr);
+		free_reverse_params(count_words(str_join), ptr);
+		free(str_join);
+	}
 }
 
 void	split_op_params_put_stack(int ac, char *av[])
 {
-	// char **str_tab;
-	int	index_split;
+	char **res;
 
-	if (ft_split_needed(ac, av))
+	if (ft_split_needed(ac, av) != -1)
+			split_reverse_put_into_stack(ac, av);
+	else
 	{
-		index_split = ft_split_needed(ac, av);
-		printf("index where split needed is : %d\n", index_split);
-		//ft_split(av[index_split]);
+		res = reverse_params(ac, av);
+		if (!res)
+			return ;
+		get_value_init_stack(ac, res);
+		free_reverse_params(ac, res);
 	}
-	// str_tab = reverse_params(ac, av);
-	// get_value_init_stack(ac, str_tab);
-	// i = 0;
-	// while (i < ac)
-	// {
-	// 	free(str_tab[i]);
-	// 	i++;
-	// }
-	// free(str_tab);
 }
 
 int main(int argc, char *argv[])
@@ -94,6 +97,5 @@ int main(int argc, char *argv[])
 		i++;
 	}
 	split_op_params_put_stack(argc - 1, argv + 1);
-
 	return (0);
 }
